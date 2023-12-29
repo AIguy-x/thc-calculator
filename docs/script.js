@@ -1,62 +1,37 @@
-document.addEventListener('DOMContentLoaded', function () {
-  var cannabisTypes = {
-    general: { thc: 10, cbd: 1 },
-    schwag: { thc: 5, cbd: 0.5 },
-    mids: { thc: 10, cbd: 1 },
-    topShelf: { thc: 20, cbd: 2 },
-    shakeTrim: { thc: 10, cbd: 1 },
-    hash: { thc: 40, cbd: 2 },
-    kief: { thc: 50, cbd: 2 },
-    concentrates: { thc: 60, cbd: 2 },
-    shatter: { thc: 70, cbd: 2 },
-    bho: { thc: 80, cbd: 2 },
-    distillate: { thc: 90, cbd: 2 },
-    rso: { thc: 60, cbd: 10 },
-    whiteWidow: { thc: 18, cbd: 0.2 },
-    girlScoutCookies: { thc: 28, cbd: 0.2 },
-    chemdawg: { thc: 32, cbd: 0.1 },
-    superLemonHaze: { thc: 25, cbd: 0.1 },
-    amnesiaHaze: { thc: 21, cbd: 1 },
-    blueDream: { thc: 20, cbd: 2 },
-    acdc: { thc: 1, cbd: 20 },
-    charlottesWeb: { thc: 1, cbd: 17 },
-  };
+// Paths to your JSON data files
+const flavorVsEffectJsonPath = 'https://aiguy-x.github.io/thc-calculator/flavorvseffect.json';
+const leaflyStrainDataJsonPath = 'https://aiguy-x.github.io/thc-calculator/leafly_strain_data.json';
+const strainsCleanedJsonPath = 'https://aiguy-x.github.io/thc-calculator/strains_cleaned.json';
 
-  var cannabisTypeSelect = document.querySelector('#cannabisType');
-  Object.keys(cannabisTypes).forEach(function (type) {
-    var option = document.createElement('option');
-    option.value = type;
-    option.innerText = type;
-    cannabisTypeSelect.append(option);
+// Fetch and use the flavor vs effect data as an example
+fetch(flavorVsEffectJsonPath)
+  .then(response => response.json())
+  .then(data => {
+    // Example of what you might do with the data:
+    const strainSelect = document.getElementById('strain');
+    data.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.name; // Assuming your JSON has a 'name' field
+      option.textContent = item.name;
+      strainSelect.appendChild(option);
+    });
+    // Rest of your code that depends on this data
+  })
+  .catch(error => {
+    console.error('Error fetching flavor vs effect data:', error);
   });
 
-  cannabisTypeSelect.addEventListener('change', function (event) {
-    var thcPercentageInput = document.querySelector('#thcPercentage');
-    var cbdPercentageInput = document.querySelector('#cbdPercentage');
-    var selectedType = event.target.value;
-    thcPercentageInput.value = cannabisTypes[selectedType].thc;
-    cbdPercentageInput.value = cannabisTypes[selectedType].cbd;
-  });
-
-  document.querySelector('#calculator').addEventListener('submit', function (event) {
-    event.preventDefault();
-    var calculatedValue; // Replace this with your actual calculation logic
-    document.querySelector('#result').innerText = calculatedValue;
-  });
-
-  document.querySelector('#weightOneEighth').addEventListener('click', function () {
-    document.querySelector('#cannabisWeight').value = 3.5;
-  });
-
-  document.querySelector('#weightOneFourth').addEventListener('click', function () {
-    document.querySelector('#cannabisWeight').value = 7;
-  });
-
-  document.querySelector('#weightOneHalf').addEventListener('click', function () {
-    document.querySelector('#cannabisWeight').value = 14;
-  });
-
-  document.querySelector('#weightOneOz').addEventListener('click', function () {
-    document.querySelector('#cannabisWeight').value = 28;
-  });
+// Event listener for the calculator form submission
+document.getElementById('calculator').addEventListener('submit', function(event) {
+  event.preventDefault();
+  // Call your calculation function here
+  // For example:
+  calculateDosage();
 });
+
+function calculateDosage() {
+  // Implement your dosage calculation logic here
+  // Update the result element with the calculated dosage
+  const resultElement = document.getElementById('result');
+  resultElement.textContent = 'Calculated Dosage: ...'; // Replace with actual result
+}
