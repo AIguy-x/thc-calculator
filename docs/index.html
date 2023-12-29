@@ -8,13 +8,23 @@
 <body>
   <!-- Calculator Form -->
   <form id="calculator">
-    <!-- Add your calculator inputs and structure here -->
-    <!-- For example: -->
-    <label for="strain">Select Strain:</label>
-    <select id="strain">
+    <!-- Strain Selection Dropdown -->
+    <label for="strainSelect">Select Strain:</label>
+    <select id="strainSelect">
       <!-- Options will be populated by script.js -->
     </select>
-    <!-- ... Other inputs ... -->
+
+    <!-- THC Percentage Input -->
+    <label for="thcInput">THC Percentage:</label>
+    <input type="text" id="thcInput" readonly>
+
+    <!-- CBD Percentage Input -->
+    <label for="cbdInput">CBD Percentage:</label>
+    <input type="text" id="cbdInput" readonly>
+
+    <!-- Add more inputs as needed... -->
+
+    <!-- Calculate Button -->
     <input type="submit" value="Calculate">
   </form>
 
