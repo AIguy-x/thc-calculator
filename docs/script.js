@@ -1,37 +1,36 @@
 // Paths to your JSON data files
-const flavorVsEffectJsonPath = 'https://aiguy-x.github.io/thc-calculator/flavorvseffect.json';
-const leaflyStrainDataJsonPath = 'https://aiguy-x.github.io/thc-calculator/leafly_strain_data.json';
-const strainsCleanedJsonPath = 'https://aiguy-x.github.io/thc-calculator/strains_cleaned.json';
+const strainsCleanedPath = 'https://aiguy-x.github.io/thc-calculator/strains_cleaned.json';
 
-// Fetch and use the flavor vs effect data as an example
-fetch(flavorVsEffectJsonPath)
+// Fetch and populate the strain dropdown
+fetch(strainsCleanedPath)
   .then(response => response.json())
-  .then(data => {
-    // Example of what you might do with the data:
-    const strainSelect = document.getElementById('strain');
-    data.forEach(item => {
+  .then(strains => {
+    const strainSelect = document.getElementById('strainSelect'); // Ensure this is the correct ID for your select element
+    strains.forEach(strain => {
       const option = document.createElement('option');
-      option.value = item.name; // Assuming your JSON has a 'name' field
-      option.textContent = item.name;
+      option.value = strain.Name; // Use 'Name' from your 'strains_cleaned.json'
+      option.textContent = strain.Name; // Use 'Name' for the dropdown text as well
       strainSelect.appendChild(option);
     });
-    // Rest of your code that depends on this data
   })
-  .catch(error => {
-    console.error('Error fetching flavor vs effect data:', error);
-  });
+  .catch(error => console.error('Error loading strains:', error));
 
-// Event listener for the calculator form submission
-document.getElementById('calculator').addEventListener('submit', function(event) {
-  event.preventDefault();
-  // Call your calculation function here
-  // For example:
-  calculateDosage();
+// Event listener for the strain selection change
+document.getElementById('strainSelect').addEventListener('change', function(event) {
+  const selectedStrainName = event.target.value;
+  const thcInput = document.getElementById('thcInput'); // Make sure this is the correct ID for your THC input
+  const cbdInput = document.getElementById('cbdInput'); // Make sure this is the correct ID for your CBD input
+  
+  // Find the selected strain data
+  fetch(strainsCleanedPath)
+    .then(response => response.json())
+    .then(strains => {
+      const selectedStrain = strains.find(strain => strain.Name === selectedStrainName);
+      if (selectedStrain) {
+        // Update THC and CBD percentages
+        thcInput.value = selectedStrain['THC%'].match(/\d+/)[0]; // Extracts the number from strings like 'THC 23%'
+        cbdInput.value = selectedStrain['Other_Cannabinoids'].match(/\d+/)[0] || '0'; // Extracts the number, defaults to '0' if not found
+      }
+    })
+    .catch(error => console.error('Error finding selected strain data:', error));
 });
-
-function calculateDosage() {
-  // Implement your dosage calculation logic here
-  // Update the result element with the calculated dosage
-  const resultElement = document.getElementById('result');
-  resultElement.textContent = 'Calculated Dosage: ...'; // Replace with actual result
-}
