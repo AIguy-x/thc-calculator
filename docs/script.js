@@ -66,3 +66,9 @@ function calculateDosage() {
     const resultElement = document.getElementById('result');
     resultElement.textContent = `Each serving contains approximately ${thcPerServingMg.toFixed(2)} mg of THC.`;
 }
+
+// Assuming your form has an id of 'calculator', add an event listener for submission
+document.getElementById('calculator').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the default form submission
+    calculateDosage(); // Call the calculateDosage function
+});
