@@ -1,52 +1,68 @@
 // Paths to your JSON data files
 const strainsCleanedPath = 'https://aiguy-x.github.io/thc-calculator/strains_cleaned.json';
 
+let strainsList = []; // To store the strains data
+
 // Fetch and populate the strain dropdown
 fetch(strainsCleanedPath)
-  .then(response => response.json())
-  .then(strains => {
-    const strainSelect = document.getElementById('strainSelect');
-    strains.forEach(strain => {
-      const option = document.createElement('option');
-      option.value = strain.Name; // Assuming 'Name' is the key for the strain name
-      option.textContent = strain.Name; // The text shown in the dropdown
-      strainSelect.appendChild(option);
-    });
-  })
-  .catch(error => console.error('Error loading strains:', error));
-
-// Event listener for the strain selection change
-document.getElementById('strainSelect').addEventListener('change', function(event) {
-  const selectedStrainName = event.target.value;
-  const thcInput = document.getElementById('thcPercentage');
-  const cbdInput = document.getElementById('cbdPercentage');
-
-  // Fetch again or use cached data
-  fetch(strainsCleanedPath)
     .then(response => response.json())
     .then(strains => {
-      const selectedStrain = strains.find(strain => strain.Name === selectedStrainName);
-      if (selectedStrain) {
-        // Update THC and CBD percentages
-        thcInput.value = selectedStrain['THC%'].match(/\d+/) ? selectedStrain['THC%'].match(/\d+/)[0] + '%' : 'N/A';
-        cbdInput.value = selectedStrain['Other_Cannabinoids'].match(/\d+/) ? selectedStrain['Other_Cannabinoids'].match(/\d+/)[0] + '%' : 'N/A';
-      }
+        strainsList = strains; // Store the strains data for later use
+        const strainSelect = document.getElementById('strainSelect');
+        strains.forEach(strain => {
+            const option = document.createElement('option');
+            option.value = strain.Name;
+            option.textContent = strain.Name;
+            strainSelect.appendChild(option);
+        });
     })
-    .catch(error => console.error('Error finding selected strain data:', error));
-});
+    .catch(error => console.error('Error loading strains:', error));
 
-// Event listener for the calculator form submission
-document.getElementById('calculator').addEventListener('submit', function(event) {
-  event.preventDefault();
-  // Here, you would call the function that performs the calculation based on user inputs
-  // Example: calculateDosage();
-});
+// Function to filter the dropdown based on search input
+function filterStrains() {
+    const searchInput = document.getElementById('strainSearch').value.toLowerCase();
+    const strainSelect = document.getElementById('strainSelect');
 
-// Example function for calculation (to be implemented)
+    // Clear previous options
+    strainSelect.innerHTML = '';
+
+    // Filter and repopulate options
+    const filteredStrains = strainsList.filter(strain =>
+        strain.Name.toLowerCase().includes(searchInput)
+    );
+
+    filteredStrains.forEach(strain => {
+        const option = document.createElement('option');
+        option.value = strain.Name;
+        option.textContent = strain.Name;
+        strainSelect.appendChild(option);
+    });
+}
+
+// Event listener for the strainSearch input
+document.getElementById('strainSearch').addEventListener('input', filterStrains);
+
+// Function for calculating dosage
 function calculateDosage() {
-  // Your calculation logic here
-  // Example: Update the result element with the calculated dosage
-  const resultElement = document.getElementById('result');
-  resultElement.textContent = 'Calculated Dosage: ...'; // Replace with actual result
-  // You'll need to retrieve the values from the input fields and perform your calculation logic
+    // Get the values from the input fields
+    const thcPercentage = parseFloat(document.getElementById('thcPercentage').value);
+    const weightGrams = parseFloat(document.getElementById('weight').value);
+    const numberOfServings = parseFloat(document.getElementById('servings').value);
+
+    // Check if the values are valid and greater than zero
+    if (isNaN(thcPercentage) || isNaN(weightGrams) || isNaN(numberOfServings) ||
+        thcPercentage <= 0 || weightGrams <= 0 || numberOfServings <= 0) {
+        alert('Please enter valid numbers for all fields.');
+        return; // Exit the function if the input is not valid
+    }
+
+    // Calculate total THC in milligrams (1 gram = 1000 milligrams)
+    const totalThcMg = (thcPercentage / 100) * weightGrams * 1000;
+
+    // Calculate THC per serving
+    const thcPerServingMg = totalThcMg / numberOfServings;
+
+    // Update the result element with the calculated dosage
+    const resultElement = document.getElementById('result');
+    resultElement.textContent = `Each serving contains approximately ${thcPerServingMg.toFixed(2)} mg of THC.`;
 }

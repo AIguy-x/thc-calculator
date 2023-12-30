@@ -6,34 +6,28 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Calculator Form -->
-  <form id="calculator">
-    <!-- Strain Selection Dropdown -->
-    <label for="strainSelect">Select Strain:</label>
-    <select id="strainSelect">
-      <!-- Options will be populated by script.js -->
-    </select>
+  <!-- Searchable Strain Input -->
+  <label for="strainSearch">Search Strain:</label>
+  <input type="text" id="strainSearch" autocomplete="off" placeholder="Type to search...">
 
-    <!-- THC Percentage Input -->
-    <label for="thcPercentage">THC Percentage:</label>
-    <input type="text" id="thcPercentage" readonly>
+  <!-- Strain Selection Dropdown -->
+  <label for="strainSelect">Select Strain:</label>
+  <select id="strainSelect">
+    <!-- Options will be populated by script.js -->
+  </select>
 
-    <!-- CBD Percentage Input -->
-    <label for="cbdPercentage">CBD Percentage:</label>
-    <input type="text" id="cbdPercentage" readonly>
+  <!-- THC Percentage Input -->
+  <label for="thcPercentage">THC Percentage:</label>
+  <input type="text" id="thcPercentage" readonly>
 
-    <!-- Additional inputs can be added here -->
-    <!-- Example: Weight of Cannabis -->
-    <label for="weight">Weight of Cannabis (grams):</label>
-    <input type="number" id="weight">
+  <!-- CBD Percentage Input -->
+  <label for="cbdPercentage">CBD Percentage:</label>
+  <input type="text" id="cbdPercentage" readonly>
 
-    <!-- Example: Number of Servings -->
-    <label for="servings">Number of Servings:</label>
-    <input type="number" id="servings">
+  <!-- Additional inputs can be added here -->
 
-    <!-- Submit Button -->
-    <input type="submit" value="Calculate">
-  </form>
+  <!-- Submit Button -->
+  <input type="submit" value="Calculate" onclick="calculateDosage()">
 
   <!-- Result Display -->
   <div id="result"></div>
