@@ -1,38 +1,25 @@
 /* Add your CSS styling here */
+/* This is just an example, you'll need to style it according to your design */
 
 body {
   font-family: Arial, sans-serif;
 }
 
-input[type="text"], select {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+form {
+  margin: 20px;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
 }
 
 input[type="submit"] {
-  width: 100%;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  margin-top: 20px;
 }
 
-input[type="submit"]:hover {
-  background-color: #45a049;
+#result {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #e0e0e0;
 }
-
-#strainSelect {
-  display: none; /* Initially hidden */
-  overflow-y: auto; /* Enable scroll if size is limited */
-  cursor: pointer;
-}
-
-/* Further styling... */
